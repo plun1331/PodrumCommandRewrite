@@ -1,7 +1,7 @@
 # Command Rewrite
 A Podrum plugin that replaces the default commands, as well as adds some new ones.
 
-The [Podrum software](/Podrum/Podrum) is currently a work in progress, so currently this is useless.
+The [Podrum software](https://github.com/Podrum/Podrum) is currently a work in progress, so currently this is useless.
 
 # How to Install
 1. Go to the [releases section](https://github.com/plun1331/PodrumCommandRewrite/releases) and download the following files from the latest release:
