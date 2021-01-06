@@ -27,7 +27,7 @@ class CommandsRewrite:
     name = "Commands Rewrite"
     description = "Changes the way the default commands work, as well as adds some more."
     author = "plun1331"
-    version = "v1.0"
+    version = "v1.1"
     server = None
 
     def __init__(self):

@@ -7,6 +7,7 @@ from podrum.command.CommandManager import CommandManager
 # External Libraries (for load/unload commands)
 from zipfile import ZipFile
 import json
+import traceback
 
 # Rewritten Commands
 class StopCommandR(Command):
@@ -59,7 +60,7 @@ class PluginsCommandR(Command):
 
     def execute(self, sender, args):
         """ Executes the command. """
-        if args > 1:
+        if len(args) > 1:
             if " ".join(args[1:]) in Plugin.plugins:
                 plugin = Plugin.plugins[" ".join(args[1:])]
                 sender.sendMessage(f"--- Showing info on plugin {' '.join(args[1:])} ---")
@@ -69,6 +70,7 @@ class PluginsCommandR(Command):
                 return
             else:
                 sender.sendMessage("Invalid plugin.")
+                return
         pluginsString = ""
         for count, pluginName in enumerate(Plugin.plugins):
             pluginsString += pluginName
@@ -142,8 +144,11 @@ class LoadPlugin(Command):
                 return
             try:
                 Plugin.load(" ".join(args[1:]))
-            except Exception as e:
-                sender.sendMessage(f"Plugin {' '.join(args[1:])} not unloaded: {e}")
+            except:
+                tb = traceback.format_exc()
+                sender.sendMessage.error(f"Error loading plugin {' '.join(args[1:])}")
+                for line in tb.split('\n'):
+                    sender.sendMessage.error(line)
                 return
             sender.sendMessage(pluginInfo["name"] + " loaded.")
         else:
@@ -161,8 +166,11 @@ class UnloadPlugin(Command):
             if " ".join(args[1:]) in Plugin.plugins:
                 try:
                     Plugin.unload(" ".join(args[1:]))
-                except Exception as e:
-                    sender.sendMessage(f"Plugin {' '.join(args[1:])} not unloaded: {e}")
+                except:
+                    tb = traceback.format_exc()
+                    sender.sendMessage.error(f"Error unloading plugin {' '.join(args[1:])}")
+                    for line in tb.split('\n'):
+                        sender.sendMessage.error(line)
                     return
             else:
                 sender.sendMessage(" ".join(args[1:]) + " is not loaded.")
