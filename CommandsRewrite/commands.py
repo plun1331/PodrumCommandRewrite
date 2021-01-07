@@ -4,10 +4,12 @@ from podrum.command.CommandManager import CommandManager
 from podrum.utils.Utils import Utils
 from podrum.plugin.Plugin import Plugin
 from podrum.command.CommandManager import CommandManager
-# External Libraries (for load/unload commands)
+from podrum.lang.Base import Base
+# External Libraries
 from zipfile import ZipFile
 import json
 import traceback
+import time
 
 # Rewritten Commands
 class StopCommandR(Command):
@@ -148,7 +150,7 @@ class LoadPlugin(Command):
                 tb = traceback.format_exc()
                 sender.sendMessage.error(f"Error loading plugin {' '.join(args[1:])}")
                 for line in tb.split('\n'):
-                    sender.sendMessage.error(line)
+                    sender.sendMessage(line)
                 return
             sender.sendMessage(pluginInfo["name"] + " loaded.")
         else:
@@ -168,9 +170,9 @@ class UnloadPlugin(Command):
                     Plugin.unload(" ".join(args[1:]))
                 except:
                     tb = traceback.format_exc()
-                    sender.sendMessage.error(f"Error unloading plugin {' '.join(args[1:])}")
+                    sender.sendMessage(f"Error unloading plugin {' '.join(args[1:])}")
                     for line in tb.split('\n'):
-                        sender.sendMessage.error(line)
+                        sender.sendMessage(line)
                     return
             else:
                 sender.sendMessage(" ".join(args[1:]) + " is not loaded.")
@@ -178,3 +180,36 @@ class UnloadPlugin(Command):
             sender.sendMessage(" ".join(args[1:]) + " unloaded.")
         else:
             sender.sendMessage("Usage: /unload <plugin>")
+
+class DebugCommand(Command):
+    """ Debug command. """
+    def __init__(self, name = "", description = "", usage = ""):
+        super().__init__("debug", "Debugs a command.")
+        self.usage = "<command> [args...]"
+
+    def execute(self, sender, args):
+        """ Executes the command. """
+        if len(args) > 1:
+            args = args[1:]
+            command = args[0]
+            if command.lower() == 'debug':
+                sender.sendMessage("Cannot debug the debug command.")
+                return
+            sender.sendMessage(f"Debugging command '{' '.join(args)}':")
+            onExcecute = time.time()
+            sender.sendMessage("")
+            try:
+                if CommandManager.isCommand(command):
+                    CommandManager.commands[command].execute(sender, args)
+                else:
+                    sender.sendMessage(Base.getTranslation("invalidCommand"))
+            except:
+                tb = traceback.format_exc()
+                for line in tb.split('\n'):
+                    sender.sendMessage(line)
+                return
+            end = time.time()
+            sender.sendMessage("")
+            sender.sendMessage(f"Execution completed in {end-onExcecute} seconds.")
+        else:
+            sender.sendMessage("Usage: /debug <command> [args...]")

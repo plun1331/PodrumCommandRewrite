@@ -20,6 +20,7 @@ from .commands import HelpCommandR
 from .commands import DifficultyCommandR
 from .commands import LoadPlugin
 from .commands import UnloadPlugin
+from .commands import DebugCommand
 
 #core class
 class CommandsRewrite:
@@ -38,7 +39,8 @@ class CommandsRewrite:
                          PluginsCommandR(),
                          DifficultyCommandR(),
                          LoadPlugin(),
-                         UnloadPlugin()]
+                         UnloadPlugin(),
+                         DebugCommand()]
         self.default_commands_str = ["stop",
                                 "say",
                                 "reload",
@@ -52,7 +54,8 @@ class CommandsRewrite:
                         "help",
                         "difficulty",
                         "load",
-                        "unload"]
+                        "unload",
+                        "debug"]
         self.default_commands = [DifficultyCommand(),
                             HelpCommand(),
                             PluginsCommand(),
