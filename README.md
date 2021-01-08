@@ -6,7 +6,7 @@ The [Podrum software](https://github.com/Podrum/Podrum) is currently a work in p
 # How to Install
 1. Go to the [releases section](https://github.com/plun1331/PodrumCommandRewrite/releases) and download the following files from the latest release:
   
-  - `CommandsRewrite.pyz`
+  - `CommandsRewriteNR.pyz`
 
   
   ![image](https://user-images.githubusercontent.com/49261529/103855273-32426e00-5067-11eb-8d42-54b29dee27e6.png)
