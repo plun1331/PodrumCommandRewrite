@@ -94,7 +94,11 @@ class HelpCommandR(Command):
                 if k != self.name:
                     sender.sendMessage("/" + k + ": " + v.description)
             return
+<<<<<<< Updated upstream
         command = CommandManager.getCommand(" ".join(args[1:]))
+=======
+        command = CommandManager2.getCommand(" ".join(args[1:]))
+>>>>>>> Stashed changes
         if command is not None:
             sender.sendMessage(f"--- Showing help for {command.name} ---")
             sender.sendMessage(f"{command.description}")
