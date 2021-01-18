@@ -190,7 +190,7 @@ class CommandsRewrite:
         pass
 
     def onEnable(self):
-        plugin.startup()
+        plugin.load()
 
     def onDisable(self):
-        plugin.cleanup()
+        plugin.unload()
