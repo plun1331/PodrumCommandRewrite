@@ -5,7 +5,7 @@ from podrum.utils.Utils import Utils
 from podrum.plugin.Plugin import Plugin
 from podrum.command.CommandManager import CommandManager
 from podrum.lang.Base import Base
-from .CommandManager import CommandManager2
+from .CommandManagerEdit import CommandManager2
 # External Modules
 from zipfile import ZipFile
 import json
@@ -168,10 +168,8 @@ def debug(sender, command, *args):
 
 @plugin.event()
 def on_command_error(command, sender, args, error):
-    if isinstance(error, PluginAPI.MissingRequiredArgument) or isinstance(error, PluginAPI.TooManyArguments):
+    if isinstance(error, PluginAPI.errors.MissingRequiredArgument) or isinstance(error, PluginAPI.errors.TooManyArguments):
         return sender.sendMessage(f"Usage: /{command.name} {command.usage}")
-    if isinstance(error, TypeError):
-        return sender.sendMessage(f"Something went wrong (you probably provided too many/too little arguments)")
     print(f"Ignoring exception in {command.name}:")
     traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
