@@ -3,7 +3,7 @@ A Podrum plugin that replaces the default commands, as well as adds some new one
 
 The [Podrum software](https://github.com/Podrum/Podrum) is currently a work in progress, so currently this is useless.
 
-This plugin requires [PodrumPluginAPI](https://github.com/plun1331/PodrumPluginAPI). You can get
+This plugin requires [PodrumPluginAPI](https://github.com/plun1331/PodrumPluginAPI). You can get the plugin with no requirements on the [`No-Requirements` branch.](https://github.com/plun1331/PodrumCommandRewrite/tree/No-Requirements)
 
 # How to Install
 1. Go to the [releases section](https://github.com/plun1331/PodrumCommandRewrite/releases) and download the following files from the latest release:
@@ -19,5 +19,7 @@ This plugin requires [PodrumPluginAPI](https://github.com/plun1331/PodrumPluginA
 
   ![image](https://user-images.githubusercontent.com/49261529/103855149-e55e9780-5066-11eb-8d5d-d1011eab92e6.png)
 
-3. Run the server.
+3. Download my [Podrum Plugin API](https://github.com/plun1331/PodrumPluginAPI/) and follow the installation instructions.
+
+4. Run the server.
 
