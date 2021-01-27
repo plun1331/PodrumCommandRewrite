@@ -1,50 +1,61 @@
 # Tools
-from podrum.command.Command import Command
-from podrum.command.CommandManager import CommandManager
-from podrum.utils.Utils import Utils
-from podrum.plugin.Plugin import Plugin
-from podrum.command.CommandManager import CommandManager
-from podrum.lang.Base import Base
+import json
+import time
+import traceback
 # External Libraries
 from zipfile import ZipFile
-import json
-import traceback
-import time
+
+from podrum.command.Command import Command
+from podrum.command.CommandManager import CommandManager
+from podrum.lang.Base import Base
+from podrum.plugin.Plugin import Plugin
+from podrum.utils.Utils import Utils
 
 # Rewritten Commands
+from CommandsRewrite.CommandManager import CommandManager2
+
+
 class StopCommandR(Command):
     """ Remade stop command. """
-    def __init__(self, name = "", description = "", usage = ""):
+
+    def __init__(self, name="", description="", usage=""):
         super().__init__("stop", "Stops the server.")
         self.usage = ""
 
-    def execute(self, sender, args):
+    @staticmethod
+    def execute(sender, args):
         """ Executes the command. """
         sender.sendMessage("Stopping server...")
         Plugin.unloadAll()
         sender.sendMessage("Server stopped.")
         Utils.killServer()
 
+
 class SayCommandR(Command):
     """ Remade say command. """
-    def __init__(self, name = "", description = "", usage = ""):
+
+    def __init__(self, name="", description="", usage=""):
         super().__init__("say", "Says something in chat.")
         self.usage = "<message>"
 
-    def execute(self, sender, args):
+    @staticmethod
+    def execute(sender, args):
         """ Executes the command. """
         if len(args) > 1:
             sender.sendMessage(" ".join(args[1:]))
         else:
             sender.sendMessage("say <message>")
 
+
 class ReloadCommandR(Command):
     """ Remade reload command. """
-    def __init__(self, name = "", description = "", usage = ""):
+
+    def __init__(self, name="", description="", usage=""):
         super().__init__("reload", "Reloads all plugins.")
         self.usage = ""
 
-    def execute(self, sender, args):
+    @staticmethod
+    def execute(sender, args):
         """ Executes the command. """
         sender.sendMessage("Reloading...")
         try:
@@ -54,13 +65,16 @@ class ReloadCommandR(Command):
             sender.sendMessage(f"Plugins could not be reloaded: {e}")
         sender.sendMessage("Reload successful!")
 
+
 class PluginsCommandR(Command):
     """ Remade plugins command. """
-    def __init__(self, name = "", description = ""):
+
+    def __init__(self, name="", description=""):
         super().__init__("plugins", "Shows plugin information.")
         self.usage = "[plugin]"
 
-    def execute(self, sender, args):
+    @staticmethod
+    def execute(sender, args):
         """ Executes the command. """
         if len(args) > 1:
             if " ".join(args[1:]) in Plugin.plugins:
@@ -80,19 +94,21 @@ class PluginsCommandR(Command):
                 pluginsString += ", "
         sender.sendMessage(f"Plugins({Plugin.pluginsCount}): {pluginsString}")
 
+
 class HelpCommandR(Command):
     """ Remade help command. """
-    def __init__(self, name = "", description = "", usage = ""):
+
+    def __init__(self, name="", description="", usage=""):
         super().__init__("help", "Shows help for a command.")
         self.usage = "[command]"
 
-    def execute(self, sender, args):
+    @staticmethod
+    def execute(sender, args):
         """ Executes the command. """
         if len(args) == 1:
             sender.sendMessage("--- Showing help ---")
             for k, v in CommandManager.commands.items():
-                if k != self.name:
-                    sender.sendMessage("/" + k + ": " + v.description)
+                sender.sendMessage("/" + k + ": " + v.description)
             return
         command = CommandManager2.getCommand(" ".join(args[1:]))
         if command is not None:
@@ -102,13 +118,16 @@ class HelpCommandR(Command):
         else:
             sender.sendMessage("Invalid command.")
 
+
 class DifficultyCommandR(Command):
     """ Remade difficulty command. """
-    def __init__(self, name = "", description = "", usage = ""):
+
+    def __init__(self, name="", description="", usage=""):
         super().__init__("difficulty", "Changes the difficulty.")
         self.usage = "<difficulty>"
 
-    def execute(self, sender, args):
+    @staticmethod
+    def execute(sender, args):
         """ Executes the command. """
         if len(args) == 2:
             if args[1] == "0" or args[1].lower() == "peaceful":
@@ -128,11 +147,14 @@ class DifficultyCommandR(Command):
 # New Commands
 class LoadPlugin(Command):
     """ Load command. """
-    def __init__(self, name = "", description = "", usage = ""):
-        super().__init__("load", "Loads a plugin. The Plugin argument is the path to the plugin (e.g. plugins/plugin.pyz)")
+
+    def __init__(self, name="", description="", usage=""):
+        super().__init__("load",
+                         "Loads a plugin. The Plugin argument is the path to the plugin (e.g. plugins/plugin.pyz)")
         self.usage = "<plugin>"
 
-    def execute(self, sender, args):
+    @staticmethod
+    def execute(sender, args):
         """ Executes the command. """
         if len(args) > 1:
             try:
@@ -156,12 +178,15 @@ class LoadPlugin(Command):
         else:
             sender.sendMessage("Usage: /load <plugin>")
 
+
 class UnloadPlugin(Command):
     """ Unload command. """
-    def __init__(self, name = "", description = "", usage = ""):
-        super().__init__("unload", "Unloads a plugin. The plugin argument is the name of the plugin.")
-        self.usage = "<plugin>"
 
+    def __init__(self, name="", description="", usage=""):
+        super().__init__("unload", "Unloads a plugin. The plugin argument is the name of the plugin.")
+        self.usage = "<plugin...>"
+
+    @staticmethod
     def execute(self, sender, args):
         """ Executes the command. """
         if len(args) > 1:
@@ -181,13 +206,16 @@ class UnloadPlugin(Command):
         else:
             sender.sendMessage("Usage: /unload <plugin>")
 
+
 class DebugCommand(Command):
     """ Debug command. """
-    def __init__(self, name = "", description = "", usage = ""):
+
+    def __init__(self, name="", description="", usage=""):
         super().__init__("debug", "Debugs a command.")
         self.usage = "<command> [args...]"
 
-    def execute(self, sender, args):
+    @staticmethod
+    def execute(sender, args):
         """ Executes the command. """
         if len(args) > 1:
             args = args[1:]
@@ -210,6 +238,23 @@ class DebugCommand(Command):
                 return
             end = time.time()
             sender.sendMessage("")
-            sender.sendMessage(f"Execution completed in {end-onExcecute} seconds.")
+            sender.sendMessage(f"Execution completed in {end - onExcecute} seconds.")
         else:
             sender.sendMessage("Usage: /debug <command> [args...]")
+
+
+class ListCommand(Command):
+    """ List command. """
+
+    def __init__(self, plugin, name="", description="", usage=""):
+        super().__init__("list", "Lists the players on the server.")
+        self.plugin = plugin
+        self.usage = ""
+
+    def execute(self, sender, args):
+        """ Executes the command. """
+        if len(self.plugin.server.players) > 0:
+            sender.sendMessage(f"{len(self.plugin.server.players)} players:")
+            sender.sendMessage(f"{','.join(self.plugin.server.players)}")
+        else:
+            sender.sendMessage("0 players.")

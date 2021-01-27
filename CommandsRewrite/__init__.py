@@ -21,6 +21,7 @@ from .commands import DifficultyCommandR
 from .commands import LoadPlugin
 from .commands import UnloadPlugin
 from .commands import DebugCommand
+from .commands import ListCommand
 
 #core class
 class CommandsRewrite:
@@ -28,7 +29,7 @@ class CommandsRewrite:
     name = "Commands Rewrite"
     description = "Changes the way the default commands work, as well as adds some more."
     author = "plun1331"
-    version = "v1.2NR"
+    version = "v1.3NR"
     server = None
 
     def __init__(self):
@@ -40,7 +41,8 @@ class CommandsRewrite:
                          DifficultyCommandR(),
                          LoadPlugin(),
                          UnloadPlugin(),
-                         DebugCommand()]
+                         DebugCommand(),
+                         ListCommand(self)]
         self.default_commands_str = ["stop",
                                 "say",
                                 "reload",
