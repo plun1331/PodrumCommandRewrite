@@ -1,6 +1,4 @@
 # Tools
-from podrum.command.Command import Command
-from podrum.command.CommandManager import CommandManager
 from podrum.utils.Utils import Utils
 from podrum.plugin.Plugin import Plugin
 from podrum.command.CommandManager import CommandManager
@@ -17,8 +15,9 @@ import sys
 CommandManager2 = CommandManager2()
 plugin = PluginAPI.Plugins()
 
+
 @plugin.command(
-    description = "Stops the server."
+    description="Stops the server."
 )
 def stop(sender):
     sender.sendMessage("Stopping server...")
@@ -26,14 +25,16 @@ def stop(sender):
     sender.sendMessage("Server stopped.")
     Utils.killServer()
 
+
 @plugin.command(
-    description = "Says something in chat."
+    description="Says something in chat."
 )
 def say(sender, *, message):
     sender.sendMessage(message)
 
+
 @plugin.command(
-    description = "Reloads all plugins."
+    description="Reloads all plugins."
 )
 def reload(sender):
     sender.sendMessage("Reloading...")
@@ -44,14 +45,16 @@ def reload(sender):
         sender.sendMessage(f"Plugins could not be reloaded: {e}")
     sender.sendMessage("Reload successful!")
 
+
 @plugin.command(
-    description = 'Shows information on a plugin.'
+    description='Shows information on a plugin.',
+    usage='[plugin]'
 )
-def plugins(sender, *, plugin = None):
-    if plugin is not None:
-        if plugin in Plugin.plugins:
-            _plugin = Plugin.plugins[plugin]
-            sender.sendMessage(f"--- Showing info on plugin {plugin} ---")
+def plugins(sender, *, __plugin=None):
+    if __plugin is not None:
+        if __plugin in Plugin.plugins:
+            _plugin = Plugin.plugins[__plugin]
+            sender.sendMessage(f"--- Showing info on plugin {__plugin} ---")
             sender.sendMessage(_plugin["description"])
             sender.sendMessage(f"Author: {_plugin['author']}")
             sender.sendMessage(f"Version {_plugin['version']}")
@@ -66,10 +69,12 @@ def plugins(sender, *, plugin = None):
             pluginsString += ", "
     sender.sendMessage(f"Plugins({Plugin.pluginsCount}): {pluginsString}")
 
+
 @plugin.command(
-    description = 'Shows help for a command.'
+    name='help',
+    description='Shows help for a command.'
 )
-def help(sender, *, command=None):
+def _help(sender, *, command=None):
     if command is None:
         sender.sendMessage("--- Showing help ---")
         for k, v in CommandManager.commands.items():
@@ -85,27 +90,30 @@ def help(sender, *, command=None):
 
 
 @plugin.command(
-    description = 'Changes the game difficulty.'
+    description='Changes the game difficulty.',
+    usage='<difficulty...>'
 )
-def difficulty(sender, *, difficulty):
-    if difficulty == "0" or difficulty.lower() == "peaceful":
+def difficulty(sender, *, _difficulty):
+    if _difficulty == "0" or _difficulty.lower() == "peaceful":
         sender.sendMessage(f"This command does nothing right now lol")
-    elif difficulty == "1" or difficulty.lower() == "easy":
+    elif _difficulty == "1" or _difficulty.lower() == "easy":
         sender.sendMessage(f"This command does nothing right now lol")
-    elif difficulty == "2" or difficulty.lower() == "normal":
+    elif _difficulty == "2" or _difficulty.lower() == "normal":
         sender.sendMessage(f"This command does nothing right now lol")
-    elif difficulty == "3" or difficulty.lower() == "hard":
+    elif _difficulty == "3" or _difficulty.lower() == "hard":
         sender.sendMessage(f"This command does nothing right now lol")
     else:
-        sender.sendMessage(f"{difficulty} is not a valid parameter!")
+        sender.sendMessage(f"{_difficulty} is not a valid parameter!")
+
 
 @plugin.command(
-    description = 'Loads a plugin. The plugin argument is the path to the plugin (e.g. plugins/plugin.pyz)'
+    description='Loads a plugin. The plugin argument is the path to the plugin (e.g. plugins/plugin.pyz)',
+    usage='<plugin...>'
 )
-def load(sender, *, plugin):
+def load(sender, *, _plugin):
     try:
-        plugin = ZipFile(plugin, "r")
-        pluginInfo = json.loads(plugin.read("plugin.json"))
+        _plugin = ZipFile(_plugin)
+        pluginInfo = json.loads(_plugin.read("plugin.json"))
         if pluginInfo["name"] in Plugin.plugins:
             sender.sendMessage("Cannot load duplicate plugin " + pluginInfo["name"])
             return
@@ -113,35 +121,38 @@ def load(sender, *, plugin):
         sender.sendMessage("Invalid plugin.")
         return
     try:
-        Plugin.load(plugin)
+        Plugin.load(_plugin)
     except:
         tb = traceback.format_exc()
-        sender.sendMessage.error(f"Error loading plugin {plugin}")
+        sender.sendMessage.error(f"Error loading plugin {_plugin}")
         for line in tb.split('\n'):
             sender.sendMessage(line)
         return
     sender.sendMessage(pluginInfo["name"] + " loaded.")
 
+
 @plugin.command(
-    description = 'Unloads a plugin. The plugin argument is the name of the plugin.'
+    description='Unloads a plugin. The plugin argument is the name of the plugin.',
+    usage='<plugin...>'
 )
-def unload(sender, *, plugin):
-    if plugin in Plugin.plugins:
+def unload(sender, *, _plugin):
+    if _plugin in Plugin.plugins:
         try:
-            Plugin.unload(plugin)
+            Plugin.unload(_plugin)
         except:
             tb = traceback.format_exc()
-            sender.sendMessage(f"Error unloading plugin {plugin}")
+            sender.sendMessage(f"Error unloading plugin {_plugin}")
             for line in tb.split('\n'):
                 sender.sendMessage(line)
             return
     else:
-        sender.sendMessage(plugin + " is not loaded.")
+        sender.sendMessage(_plugin + " is not loaded.")
         return
-    sender.sendMessage(plugin + " unloaded.")
+    sender.sendMessage(_plugin + " unloaded.")
+
 
 @plugin.command(
-    description = 'Debugs a command.'
+    description='Debugs a command.'
 )
 def debug(sender, command, *args):
     arg = [command]
@@ -164,17 +175,31 @@ def debug(sender, command, *args):
         return
     end = time.time()
     sender.sendMessage("")
-    sender.sendMessage(f"Execution completed in {end-onExcecute} seconds.")
+    sender.sendMessage(f"Execution completed in {end - onExcecute} seconds.")
+
+
+@plugin.command(
+    name="list",
+    description="Lists the players on the server."
+)
+def _list(sender):
+    if len(CommandsRewrite.server.players) > 0:
+        sender.sendMessage(f"{len(CommandsRewrite.server.players)} players:")
+        sender.sendMessage(f"{','.join(CommandsRewrite.server.players)}")
+    else:
+        sender.sendMessage("0 players.")
+
 
 @plugin.event()
 def on_command_error(command, sender, args, error):
-    if isinstance(error, PluginAPI.errors.MissingRequiredArgument) or isinstance(error, PluginAPI.errors.TooManyArguments):
+    if isinstance(error, PluginAPI.errors.MissingRequiredArgument) or isinstance(error,
+                                                                                 PluginAPI.errors.TooManyArguments):
         return sender.sendMessage(f"Usage: /{command.name} {command.usage}")
     print(f"Ignoring exception in {command.name}:")
     traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
 
-#core class
+# core class
 class CommandsRewrite:
     """ Commands Rewrite plugin class. """
     name = "Commands Rewrite"
@@ -183,12 +208,14 @@ class CommandsRewrite:
     version = "v1.2"
     server = None
 
-    
-    def onLoad(self):
+    @staticmethod
+    def onLoad():
         pass
 
-    def onEnable(self):
+    @staticmethod
+    def onEnable():
         plugin.load()
 
-    def onDisable(self):
+    @staticmethod
+    def onDisable():
         plugin.unload()

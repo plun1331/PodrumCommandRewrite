@@ -12,4 +12,3 @@ class CommandManager2:
         if command in CommandManager.commands:
             return CommandManager.commands[command]
         return None
-
