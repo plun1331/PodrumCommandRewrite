@@ -2,7 +2,7 @@
     "name": "Commands Rewrite",
     "description": "Replaces the default commands, as well as adds some new ones.",
     "author": "plun1331",
-    "version": "v1.2",
+    "version": "v1.3",
     "api-version": 0,
     "main": "CommandsRewrite.CommandsRewrite"
 }
